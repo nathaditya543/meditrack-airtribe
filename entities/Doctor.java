@@ -1,6 +1,7 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Doctor extends Person {
     ArrayList<Appointment> appList = new ArrayList<>();
@@ -13,6 +14,7 @@ public class Doctor extends Person {
         super(id, name);
         this.exp = exp;
         this.id = id;
+        this.spec = spec;
         this.consultationFee  = consultationFee;
         this.ratePerMinute = ratePerMinute;
     }
@@ -27,6 +29,10 @@ public class Doctor extends Person {
 
     public void addApp(Appointment appointment){
         appList.add(appointment);
+    }
+
+    public List<Appointment> getAppointments() {
+        return new ArrayList<>(appList);
     }
 
     public double getConsultationFee(){

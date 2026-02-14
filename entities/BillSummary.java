@@ -3,14 +3,14 @@ package entities;
 import java.time.LocalDateTime;
 
 public class BillSummary {
-    int billId;
-    int appointmentId;
-    double amount;
-    String doctor;
-    String patient;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
-    LocalDateTime genTime;
+    final int billId;
+    final int appointmentId;
+    final double amount;
+    final String doctor;
+    final String patient;
+    final LocalDateTime startTime;
+    final LocalDateTime endTime;
+    final LocalDateTime genTime;
 
     public BillSummary(int billId, int appointmentId, double amount, String doctor, String patient, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime genTime){
         this.billId = billId;
@@ -31,11 +31,15 @@ public class BillSummary {
         return appointmentId;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
     public String getPatient() {
         return patient;
     }
 
-    public String getDoctorId() {
+    public String getDoctor() {
         return doctor;
     }
 

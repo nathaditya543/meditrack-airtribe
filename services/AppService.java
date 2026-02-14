@@ -5,15 +5,30 @@ import exceptions.IdNotFound;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AppService {
+    private static final String FILE_PATH = "data/appointments.csv";
+    private static final String HEADER = "id,doctorId,patientId,startTime,endTime";
+    private final DocService docService;
+    private final PatientService patientService;
+    private final ScheduleService scheduleService;
     ArrayList<Appointment> appList = new ArrayList<>();
 
-    void addApp(int id, Doctor doc, Patient pat, LocalDateTime startTime, LocalDateTime endTime){
+    public AppService(DocService docService, PatientService patientService, ScheduleService scheduleService) {
+        this.docService = docService;
+        this.patientService = patientService;
+        this.scheduleService = scheduleService;
+        loadFromCsv();
+    }
+
+    public void addApp(int id, Doctor doc, Patient pat, LocalDateTime startTime, LocalDateTime endTime){
+        scheduleService.validateDoctorAvailability(doc, startTime, endTime);
         Appointment newApp  = new Appointment(id, doc, pat, startTime, endTime);
         appList.add(newApp);
         pat.addApp(newApp);
         doc.addApp(newApp);
+        saveToCsv();
     }
 
     public Appointment getAppointment(int id){
@@ -22,5 +37,48 @@ public class AppService {
                 return appointment;
         }
         throw new IdNotFound("Appointment with ID " + id + " not found");
+    }
+
+    private void loadFromCsv() {
+        List<String> lines = CsvStore.readDataLines(FILE_PATH);
+        for (String line : lines) {
+            if (line.trim().isEmpty()) {
+                continue;
+            }
+            String[] p = line.split(",", -1);
+            if (p.length < 5) {
+                continue;
+            }
+
+            int id = Integer.parseInt(p[0]);
+            int doctorId = Integer.parseInt(p[1]);
+            int patientId = Integer.parseInt(p[2]);
+            LocalDateTime startTime = LocalDateTime.parse(p[3]);
+            LocalDateTime endTime = LocalDateTime.parse(p[4]);
+
+            try {
+                Doctor doc = docService.getDoctor(doctorId);
+                Patient pat = patientService.getPatient(patientId);
+                Appointment app = new Appointment(id, doc, pat, startTime, endTime);
+                appList.add(app);
+                pat.addApp(app);
+                doc.addApp(app);
+            } catch (IdNotFound ignored) {
+            }
+        }
+    }
+
+    private void saveToCsv() {
+        List<String> rows = new ArrayList<>();
+        for (Appointment a : appList) {
+            rows.add(
+                a.getId() + "," +
+                a.getDoc().getId() + "," +
+                a.getPat().getId() + "," +
+                a.getStartTime() + "," +
+                a.getEndTime()
+            );
+        }
+        CsvStore.writeAll(FILE_PATH, HEADER, rows);
     }
 }
