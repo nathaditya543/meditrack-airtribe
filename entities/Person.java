@@ -1,6 +1,6 @@
 package entities;
 
-abstract class Person {
+public class Person {
     int id;
     String name;
 
