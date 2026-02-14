@@ -1,7 +1,6 @@
 package entities;
 
 import java.util.ArrayList;
-import  entities.Appointment;
 
 public class Patient extends Person{
     ArrayList<Appointment> appList = new ArrayList<>();
