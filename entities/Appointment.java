@@ -1,46 +1,46 @@
 package entities;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Appointment {
     int id;
-    int docId;
-    int patId;
+    Doctor doc;
+    Patient pat;
+    Bill bill;
     LocalDateTime startTime;
     LocalDateTime endTime;
-    long durationMinutes;
+    
 
-    Appointment(int id, int docId, int patId, LocalDateTime startTime, LocalDateTime endTime) {
+    public Appointment(int id, Doctor doc, Patient pat, LocalDateTime startTime, LocalDateTime endTime) {
         this.id = id;
-        this.docId = docId;
-        this.patId = patId;
+        this.doc = doc;
+        this.pat = pat;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.durationMinutes = Duration.between(startTime, endTime).toMinutes();
     }
 
-    int getId() {
+    
+    public int getId() {
         return id;
     }
 
-    int getDocId() {
-        return docId;
+    public Doctor getDoc() {
+        return doc;
     }
 
-    int getPatId() {
-        return patId;
+    public Patient getPat() {
+        return pat;
     }
 
-    LocalDateTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    LocalDateTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    long getDurationMinutes() {
-        return durationMinutes;
+    public void setBill(Bill bill){
+        this.bill = bill;
     }
 }

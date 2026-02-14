@@ -1,36 +1,45 @@
 package entities;
 
+import java.util.ArrayList;
+import  entities.Appointment;
+
 public class Patient extends Person{
+    ArrayList<Appointment> appList = new ArrayList<>();
+
     int age;
     BloodType bloodType;
     String gender;
     double heightcm, weightkg;
 
 
-    Patient(int id, String name, int age, BloodType bloodType) {
+    public Patient(int id, String name, int age, BloodType bloodType) {
         super(id, name);
         this.age = age;
         this.bloodType = bloodType;
     }
 
 
-    int getAge() {
+    public int getAge() {
         return age;
     }
 
-    BloodType getBloodType() {
+    public BloodType getBloodType() {
         return bloodType;
     }
 
-    String getGender() {
+    public String getGender() {
         return gender;
     }
 
-    double getHeightCm() {
+    public double getHeightCm() {
         return heightcm;
     }
 
-    double getWeightKg() {
+    public double getWeightKg() {
         return weightkg;
+    }
+
+    public void addApp(Appointment appointment){
+        appList.add(appointment);
     }
 }

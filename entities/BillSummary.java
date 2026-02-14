@@ -5,11 +5,23 @@ import java.time.LocalDateTime;
 public class BillSummary {
     int billId;
     int appointmentId;
-    int patientId;
-    int doctorId;
+    double amount;
+    String doctor;
+    String patient;
     LocalDateTime startTime;
     LocalDateTime endTime;
     LocalDateTime genTime;
+
+    public BillSummary(int billId, int appointmentId, double amount, String doctor, String patient, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime genTime){
+        this.billId = billId;
+        this.appointmentId = appointmentId;
+        this.amount = amount;
+        this.doctor = doctor;
+        this.patient  = patient;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.genTime  = genTime;
+    }
 
     public int getBillId() {
         return billId;
@@ -19,12 +31,12 @@ public class BillSummary {
         return appointmentId;
     }
 
-    public int getPatientId() {
-        return patientId;
+    public String getPatient() {
+        return patient;
     }
 
-    public int getDoctorId() {
-        return doctorId;
+    public String getDoctorId() {
+        return doctor;
     }
 
     public LocalDateTime getStartTime() {

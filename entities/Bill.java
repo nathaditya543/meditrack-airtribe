@@ -3,60 +3,44 @@ package entities;
 import java.time.LocalDateTime;
 
 public class Bill {
-    final int billId;
-    final int appointmentId;
-    // final int patientId;
-    // final int doctorId;
-    // final long durationMinutes;
-    // final double ratePerMinute;
-    // final double totalAmount;
+    int billId;
+    Appointment appointment;
     boolean status;
-    final LocalDateTime generatedAt;
+    LocalDateTime generatedAt;
+    double amount;
 
-    Bill(int billId, int appointmentId, boolean status, LocalDateTime generatedAt) {
+    public Bill(int billId, Appointment appointment, LocalDateTime generatedAt) {
         this.billId = billId;
-        this.appointmentId = appointmentId;
-        this.status = status;
+        this.appointment = appointment;
+        this.status = false;
         this.generatedAt = generatedAt;
-        // doctorId = AppServ.getDoc(appointmentId);
-        // patientId = AppServ.getPat(appointmentId);
-        // totalAmount = BillServ.getAmount(appointmentId);
-
     }
 
-    int getBillId() {
+    public int getBillId() {
         return billId;
     }
 
-    int getAppointmentId() {
-        return appointmentId;
+    public Appointment getAppointment() {
+        return appointment;
     }
 
-    // int getPatientId() {
-    //     return patientId;
-    // }
+    public double getAmount(){
+        return amount;
+    }
 
-    // int getDoctorId() {
-    //     return doctorId;
-    // }
-
-    // long getDurationMinutes() {
-    //     return durationMinutes;
-    // }
-
-    // double getRatePerMinute() {
-    //     return ratePerMinute;
-    // }
-
-    // double getTotalAmount() {
-    //     return totalAmount;
-    // }
-
-    boolean getStatus() {
+    public boolean getStatus() {
         return status;
     }
 
-    LocalDateTime getGeneratedAt() {
+    public LocalDateTime getGeneratedAt() {
         return generatedAt;
+    }
+
+    public void setAmount(double amount){
+        this.amount = amount;
+    }
+
+    public void  setStatus(boolean status){
+        this.status = status;
     }
 }
