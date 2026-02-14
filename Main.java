@@ -19,10 +19,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
+// Console entry point with menu-driven workflows for core MediTrack use cases.
 public class Main {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static void main(String[] args) {
+        // Single scanner for the full interactive session.
         Scanner scanner = new Scanner(System.in);
 
         DocService docService = new DocService();
@@ -85,6 +87,7 @@ public class Main {
         scanner.close();
     }
 
+    // Prints top-level menu options.
     private static void printMainMenu() {
         System.out.println("================================");
         System.out.println("        MediTrack Main Menu");
@@ -102,6 +105,7 @@ public class Main {
         System.out.println("--------------------------------");
     }
 
+    // Nested bill menu for summary-specific actions.
     private static void billMenu(Scanner scanner, BillService billService, BillSummaryService billSummaryService) {
         boolean inBillMenu = true;
         while (inBillMenu) {
@@ -124,6 +128,7 @@ public class Main {
         }
     }
 
+    // Collects doctor profile and schedule details.
     private static void addDoctor(Scanner scanner, DocService docService, ScheduleService scheduleService) {
         System.out.println("\n[Add Doctor]");
         int id = readInt(scanner, "Doctor ID: ");
@@ -141,6 +146,7 @@ public class Main {
         System.out.println("Doctor added.");
     }
 
+    // Collects patient details and stores a patient record.
     private static void addPatient(Scanner scanner, PatientService patientService) {
         System.out.println("\n[Add Patient]");
         int id = readInt(scanner, "Patient ID: ");
@@ -152,6 +158,7 @@ public class Main {
         System.out.println("Patient added.");
     }
 
+    // Collects appointment details and creates validated booking.
     private static void addAppointment(
         Scanner scanner,
         DocService docService,
@@ -173,6 +180,7 @@ public class Main {
         System.out.println("Appointment added.");
     }
 
+    // Generates bill from appointment.
     private static void addBill(Scanner scanner, AppService appService, BillService billService) {
         System.out.println("\n[Generate Bill]");
         int billId = readInt(scanner, "Bill ID: ");
@@ -183,6 +191,7 @@ public class Main {
         System.out.println("Bill generated.");
     }
 
+    // Marks a bill as paid.
     private static void payBill(Scanner scanner, BillService billService) {
         System.out.println("\n[Pay Bill]");
         int billId = readInt(scanner, "Bill ID: ");
@@ -191,6 +200,7 @@ public class Main {
         System.out.println("Bill marked as paid.");
     }
 
+    // Reads and prints doctor details.
     private static void viewDoctor(Scanner scanner, DocService docService) {
         System.out.println("\n[View Doctor]");
         int id = readInt(scanner, "Doctor ID: ");
@@ -204,6 +214,7 @@ public class Main {
         System.out.println("Rate/Minute: " + doctor.getRatePerMinute());
     }
 
+    // Reads and prints patient details.
     private static void viewPatient(Scanner scanner, PatientService patientService) {
         System.out.println("\n[View Patient]");
         int id = readInt(scanner, "Patient ID: ");
@@ -215,6 +226,7 @@ public class Main {
         System.out.println("Blood Type: " + patient.getBloodType());
     }
 
+    // Reads and prints appointment details.
     private static void viewAppointment(Scanner scanner, AppService appService) {
         System.out.println("\n[View Appointment]");
         int id = readInt(scanner, "Appointment ID: ");
@@ -229,6 +241,7 @@ public class Main {
         System.out.println("Duration (minutes): " + duration);
     }
 
+    // Reads bill and prints flattened summary view.
     private static void viewBillSummary(Scanner scanner, BillService billService, BillSummaryService billSummaryService) {
         System.out.println("\n[View Bill Summary]");
         int billId = readInt(scanner, "Bill ID: ");
@@ -246,6 +259,7 @@ public class Main {
         System.out.println("Generated At: " + summary.getGenTime());
     }
 
+    // Safe integer parsing with consistent validation error.
     private static int readInt(Scanner scanner, String prompt) {
         System.out.print(prompt);
         try {
@@ -255,6 +269,7 @@ public class Main {
         }
     }
 
+    // Safe decimal parsing with consistent validation error.
     private static double readDouble(Scanner scanner, String prompt) {
         System.out.print(prompt);
         try {
@@ -264,6 +279,7 @@ public class Main {
         }
     }
 
+    // Reads a non-empty string value.
     private static String readString(Scanner scanner, String prompt) {
         System.out.print(prompt);
         String value = scanner.nextLine().trim();
@@ -273,6 +289,7 @@ public class Main {
         return value;
     }
 
+    // Parses local date-time in menu-supported format.
     private static LocalDateTime readDateTime(Scanner scanner, String prompt) {
         System.out.print(prompt);
         String value = scanner.nextLine().trim();
@@ -283,6 +300,7 @@ public class Main {
         }
     }
 
+    // Parses local time for schedule input.
     private static LocalTime readTime(Scanner scanner, String prompt) {
         System.out.print(prompt);
         String value = scanner.nextLine().trim();
@@ -293,6 +311,7 @@ public class Main {
         }
     }
 
+    // Parses one of the supported BloodType enum values.
     private static BloodType readBloodType(Scanner scanner) {
         System.out.print("Blood Type " + java.util.Arrays.toString(BloodType.values()) + ": ");
         String value = scanner.nextLine().trim().toUpperCase();

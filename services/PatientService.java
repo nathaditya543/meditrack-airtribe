@@ -6,21 +6,25 @@ import exceptions.IdNotFound;
 import java.util.ArrayList;
 import java.util.List;
 
+// Manages patient records and patient CSV persistence.
 public class PatientService {
     private static final String FILE_PATH = "data/patients.csv";
     private static final String HEADER = "id,name,age,bloodType";
     ArrayList<Patient> patList = new ArrayList<>();
 
     public PatientService() {
+        // Load persisted patients into memory at startup.
         loadFromCsv();
     }
 
+    // Adds a patient record and persists the updated list.
     public void AddPatient(int id, String name, int age, BloodType bloodType) {
         Patient newPat = new Patient(id, name, age, bloodType);
         patList.add(newPat);
         saveToCsv();
     }
 
+    // Returns patient by ID or throws when missing.
     public Patient getPatient(int id) {
         for (Patient patient : patList) {
             if (patient.getId() == id) {
@@ -30,6 +34,7 @@ public class PatientService {
         throw new IdNotFound("Patient with ID " + id + " not found");
     }
 
+    // Hydrates in-memory list from persisted CSV rows.
     private void loadFromCsv() {
         List<String> lines = CsvStore.readDataLines(FILE_PATH);
         for (String line : lines) {
@@ -48,6 +53,7 @@ public class PatientService {
         }
     }
 
+    // Persists in-memory patient list to CSV.
     private void saveToCsv() {
         List<String> rows = new ArrayList<>();
         for (Patient p : patList) {

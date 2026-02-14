@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+// Manages appointment lifecycle and appointment CSV persistence.
 public class AppService {
     private static final String FILE_PATH = "data/appointments.csv";
     private static final String HEADER = "id,doctorId,patientId,startTime,endTime";
@@ -19,9 +20,11 @@ public class AppService {
         this.docService = docService;
         this.patientService = patientService;
         this.scheduleService = scheduleService;
+        // Load persisted appointments after dependent services are ready.
         loadFromCsv();
     }
 
+    // Adds appointment after schedule validation, then persists changes.
     public void addApp(int id, Doctor doc, Patient pat, LocalDateTime startTime, LocalDateTime endTime){
         scheduleService.validateDoctorAvailability(doc, startTime, endTime);
         Appointment newApp  = new Appointment(id, doc, pat, startTime, endTime);
@@ -31,6 +34,7 @@ public class AppService {
         saveToCsv();
     }
 
+    // Returns appointment by ID or throws when missing.
     public Appointment getAppointment(int id){
         for(Appointment appointment: appList){
             if(appointment.getId() == id)
@@ -39,6 +43,7 @@ public class AppService {
         throw new IdNotFound("Appointment with ID " + id + " not found");
     }
 
+    // Hydrates appointments from CSV and re-links doctor/patient references.
     private void loadFromCsv() {
         List<String> lines = CsvStore.readDataLines(FILE_PATH);
         for (String line : lines) {
@@ -64,10 +69,12 @@ public class AppService {
                 pat.addApp(app);
                 doc.addApp(app);
             } catch (IdNotFound ignored) {
+                // Skip dangling rows if doctor/patient records are missing.
             }
         }
     }
 
+    // Persists in-memory appointment list to CSV.
     private void saveToCsv() {
         List<String> rows = new ArrayList<>();
         for (Appointment a : appList) {

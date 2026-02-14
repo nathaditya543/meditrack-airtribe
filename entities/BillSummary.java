@@ -2,6 +2,7 @@ package entities;
 
 import java.time.LocalDateTime;
 
+// Read-only view model used for showing bill details in UI/output.
 public class BillSummary {
     final int billId;
     final int appointmentId;

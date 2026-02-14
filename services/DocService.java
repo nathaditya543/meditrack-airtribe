@@ -5,21 +5,25 @@ import exceptions.IdNotFound;
 import  java.util.ArrayList;
 import java.util.List;
 
+// Manages doctor records and doctor CSV persistence.
 public class DocService {
     private static final String FILE_PATH = "data/doctors.csv";
     private static final String HEADER = "id,name,exp,spec,consultationFee,ratePerMinute";
     ArrayList<Doctor>  docList = new ArrayList<>();
 
     public DocService() {
+        // Load persisted doctors into memory at startup.
         loadFromCsv();
     }
 
+    // Adds a doctor record and persists the updated list.
     public void AddDoc(int  exp, int  id, String name, String spec, double consultationFee, double ratePerMinute){
         Doctor newDoc = new Doctor(exp, id, name, spec, consultationFee, ratePerMinute);
         docList.add(newDoc);
         saveToCsv();
     }
 
+    // Returns doctor by ID or throws when missing.
     public Doctor getDoctor(int id) {
         for (Doctor doctor : docList) {
             if (doctor.getId() == id) {
@@ -29,6 +33,7 @@ public class DocService {
         throw new IdNotFound("Doctor with ID " + id + " not found");
     }
 
+    // Returns doctors matching a specialization (case-insensitive).
     public List<Doctor> getDoctorsBySpec(String spec) {
         List<Doctor> matched = new ArrayList<>();
         for (Doctor doctor : docList) {
@@ -39,6 +44,7 @@ public class DocService {
         return matched;
     }
 
+    // Hydrates in-memory list from persisted CSV rows.
     private void loadFromCsv() {
         List<String> lines = CsvStore.readDataLines(FILE_PATH);
         for (String line : lines) {
@@ -59,6 +65,7 @@ public class DocService {
         }
     }
 
+    // Persists in-memory doctor list to CSV.
     private void saveToCsv() {
         List<String> rows = new ArrayList<>();
         for (Doctor d : docList) {

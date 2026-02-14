@@ -2,7 +2,9 @@ package entities;
 
 import java.util.ArrayList;
 
+// Patient entity with demographics and assigned appointments.
 public class Patient extends Person{
+    // Internal appointment list managed by services.
     ArrayList<Appointment> appList = new ArrayList<>();
 
     int age;
@@ -38,6 +40,7 @@ public class Patient extends Person{
         return weightkg;
     }
 
+    // Registers appointment association for this patient.
     public void addApp(Appointment appointment){
         appList.add(appointment);
     }

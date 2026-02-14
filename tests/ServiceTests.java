@@ -21,7 +21,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 
+// End-to-end service tests using local CSV files as backing storage.
 public class ServiceTests {
+    // Convenience wrapper if all tests are triggered manually.
     public void runAll() {
         testAddAndGetFlow();
         testNotFoundExceptions();
@@ -30,6 +32,7 @@ public class ServiceTests {
         testRecommendationService();
     }
 
+    // Cleans persistent files to keep tests isolated and repeatable.
     private void resetData() {
         Path dataDir = Paths.get("data");
         if (!Files.exists(dataDir)) {
@@ -46,6 +49,7 @@ public class ServiceTests {
         }
     }
 
+    // Verifies add/get flows for doctor, patient, appointment, and bill.
     public void testAddAndGetFlow() {
         resetData();
 
@@ -80,6 +84,7 @@ public class ServiceTests {
         assertTrue(bill.getStatus(), "Bill should be marked paid");
     }
 
+    // Verifies ID lookup failures raise expected domain exception.
     public void testNotFoundExceptions() {
         resetData();
 
@@ -95,6 +100,7 @@ public class ServiceTests {
         assertThrows(() -> billService.getBill(999), "Bill not-found should throw");
     }
 
+    // Verifies bill summary projection values are correctly mapped.
     public void testBillSummaryGeneration() {
         resetData();
 
@@ -133,6 +139,7 @@ public class ServiceTests {
         assertEquals("Mark", summary.getPatient(), "Summary patient mismatch");
     }
 
+    // Verifies CSV-backed persistence survives service re-instantiation.
     public void testCsvPersistenceReload() {
         resetData();
 
@@ -163,6 +170,7 @@ public class ServiceTests {
         assertEquals(15, reloadedScheduleService.getSchedule(41).getSlotMinutes(), "Schedule not persisted");
     }
 
+    // Verifies symptom rules and fallback doctor recommendation behavior.
     public void testRecommendationService() {
         resetData();
 
@@ -183,24 +191,28 @@ public class ServiceTests {
         assertEquals("Dr. General", fallbackDoctors.get(0).getName(), "Fallback doctor recommendation mismatch");
     }
 
+    // Minimal assertion helpers for dependency-free testing.
     private void assertTrue(boolean condition, String message) {
         if (!condition) {
             throw new AssertionError(message);
         }
     }
 
+    // Integer equality assertion.
     private void assertEquals(int expected, int actual, String message) {
         if (expected != actual) {
             throw new AssertionError(message + " (expected=" + expected + ", actual=" + actual + ")");
         }
     }
 
+    // String equality assertion.
     private void assertEquals(String expected, String actual, String message) {
         if (!expected.equals(actual)) {
             throw new AssertionError(message + " (expected=" + expected + ", actual=" + actual + ")");
         }
     }
 
+    // Asserts that an IdNotFound exception is thrown by action.
     private void assertThrows(Runnable action, String message) {
         try {
             action.run();

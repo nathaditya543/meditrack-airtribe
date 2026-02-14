@@ -8,9 +8,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+// Shared utility for reading/writing simple CSV storage files.
 public final class CsvStore {
     private CsvStore() {}
 
+    // Ensures `data/` exists before any write operation.
     public static void ensureDataDir() {
         try {
             Files.createDirectories(Paths.get("data"));
@@ -19,6 +21,7 @@ public final class CsvStore {
         }
     }
 
+    // Reads CSV rows excluding header; returns empty list when file is missing.
     public static List<String> readDataLines(String filePath) {
         Path path = Paths.get(filePath);
         if (!Files.exists(path)) {
@@ -35,6 +38,7 @@ public final class CsvStore {
         }
     }
 
+    // Writes full CSV content with header and supplied rows.
     public static void writeAll(String filePath, String header, List<String> rows) {
         ensureDataDir();
         List<String> lines = new ArrayList<>();

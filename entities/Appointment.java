@@ -2,6 +2,7 @@ package entities;
 
 import java.time.LocalDateTime;
 
+// Appointment entity linking doctor, patient, and booked time range.
 public class Appointment {
     int id;
     Doctor doc;
@@ -40,6 +41,7 @@ public class Appointment {
         return endTime;
     }
 
+    // Links generated bill back to this appointment.
     public void setBill(Bill bill){
         this.bill = bill;
     }

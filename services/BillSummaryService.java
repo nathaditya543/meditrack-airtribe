@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 
 import entities.Appointment;
 import entities.Bill;
+
+// Builds read-only bill presentation objects.
 public class BillSummaryService {
+    // Converts a Bill entity to a flattened BillSummary view.
     public BillSummary getSummary(Bill bill){
         int billId = bill.getBillId();
         double amount = bill.getAmount();

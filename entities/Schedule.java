@@ -2,6 +2,7 @@ package entities;
 
 import java.time.LocalTime;
 
+// Simple weekly-template style doctor schedule definition.
 public class Schedule {
     final int doctorId;
     final LocalTime workStart;

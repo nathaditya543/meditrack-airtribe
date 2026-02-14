@@ -13,15 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// Manages doctor schedules and validates appointment time availability.
 public class ScheduleService {
     private static final String FILE_PATH = "data/schedules.csv";
     private static final String HEADER = "doctorId,workStart,workEnd,slotMinutes";
     private final Map<Integer, Schedule> schedulesByDoctorId = new HashMap<>();
 
     public ScheduleService() {
+        // Load persisted schedules into memory at startup.
         loadFromCsv();
     }
 
+    // Creates or updates doctor schedule after basic validation.
     public void setSchedule(Schedule schedule) {
         if (schedule.getSlotMinutes() <= 0) {
             throw new IllegalArgumentException("Slot minutes must be positive.");
@@ -33,10 +36,12 @@ public class ScheduleService {
         saveToCsv();
     }
 
+    // Convenience overload for direct primitive input.
     public void setSchedule(int doctorId, LocalTime workStart, LocalTime workEnd, int slotMinutes) {
         setSchedule(new Schedule(doctorId, workStart, workEnd, slotMinutes));
     }
 
+    // Returns schedule by doctor ID or throws when missing.
     public Schedule getSchedule(int doctorId) {
         Schedule schedule = schedulesByDoctorId.get(doctorId);
         if (schedule == null) {
@@ -45,6 +50,7 @@ public class ScheduleService {
         return schedule;
     }
 
+    // Validates slot boundaries, slot alignment, and conflict overlap.
     public void validateDoctorAvailability(Doctor doctor, LocalDateTime startTime, LocalDateTime endTime) {
         if (!endTime.isAfter(startTime)) {
             throw new IllegalArgumentException("Appointment end time must be after start time.");
@@ -78,6 +84,7 @@ public class ScheduleService {
         }
     }
 
+    // Hydrates schedule map from persisted CSV rows.
     private void loadFromCsv() {
         List<String> lines = CsvStore.readDataLines(FILE_PATH);
         for (String line : lines) {
@@ -101,6 +108,7 @@ public class ScheduleService {
         }
     }
 
+    // Persists schedule map to CSV.
     private void saveToCsv() {
         List<String> rows = new ArrayList<>();
         for (Schedule schedule : schedulesByDoctorId.values()) {

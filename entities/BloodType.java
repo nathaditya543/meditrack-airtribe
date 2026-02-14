@@ -1,5 +1,6 @@
 package entities;
 
+// Supported blood types used by patient records.
 public enum BloodType {
     A_P,
     A_N,

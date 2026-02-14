@@ -2,6 +2,7 @@ package entities;
 
 import java.time.LocalDateTime;
 
+// Billing entity created for a single appointment.
 public class Bill {
     int billId;
     Appointment appointment;
@@ -36,10 +37,12 @@ public class Bill {
         return generatedAt;
     }
 
+    // Sets computed amount after bill creation.
     public void setAmount(double amount){
         this.amount = amount;
     }
 
+    // Updates payment status: false = unpaid, true = paid.
     public void  setStatus(boolean status){
         this.status = status;
     }

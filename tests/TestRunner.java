@@ -1,5 +1,6 @@
 package tests;
 
+// Simple no-framework test runner with per-test pass/fail output.
 public class TestRunner {
     public static void main(String[] args) {
         ServiceTests tests = new ServiceTests();
@@ -46,6 +47,7 @@ public class TestRunner {
         }
     }
 
+    // Executes one test method and converts thrown errors to status output.
     private static boolean runTest(String name, Runnable test) {
         try {
             test.run();
